@@ -1,0 +1,15 @@
+name: test
+
+on:
+  schedule:
+    - cron: '1/5 * * * *'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check
+        run: |
+          echo "testing"
