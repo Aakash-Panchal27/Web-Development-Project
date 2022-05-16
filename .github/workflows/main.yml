@@ -1,7 +1,7 @@
 name: Master
 on:
   schedule:
-    - cron: '10 0/2 * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
         continue-on-error: true
         name: check whether latest commit is within two hours.
         if: ${{ github.event_name == 'schedule' }}
-        run: test -z $(git rev-list --after="2 hours" ${{ github.sha }}) && echo "::set-output name=should_run::false"
+        run: test -z $(git rev-list --after="5 minutes" ${{ github.sha }}) && echo "::set-output name=should_run::false"
 
   build:
 
