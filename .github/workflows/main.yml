@@ -2,7 +2,7 @@ name: Master
 on:
   schedule:
     # Schedule will run every 3 hour past 15 minutes.
-    - cron: '*/5 * * * *'
+    - cron: '5 0/1 * * *'
   workflow_dispatch:
 
 jobs:
