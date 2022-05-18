@@ -21,7 +21,7 @@ jobs:
         continue-on-error: true
         name: check whether latest commit is within three hours.
         # 15 minutes tolerance to deal with delays.
-        run: test -z $(git rev-list --after="0 hours 5 minutes" ${{ github.sha }}) && echo "::set-output name=should_run::false"
+        run: test -z $(git rev-list --after="1 hour" ${{ github.sha }}) && echo "::set-output name=should_run::false"
 
   build:
 
