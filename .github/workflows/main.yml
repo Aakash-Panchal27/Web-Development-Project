@@ -1,10 +1,33 @@
 name: Master
 on:
-  push:
+  schedule:
+    # Schedule will run every 3 hour past 15 minutes.
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 jobs:
+  check_latest_commit:
+
+    runs-on: ubuntu-latest
+    name: Check latest commit
+    outputs:
+      should_run: ${{ steps.should_run.outputs.should_run }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: print latest_commit
+        run: echo ${{ github.sha }}
+
+      - id: should_run
+        continue-on-error: true
+        name: check whether latest commit is within three hours.
+        if: ${{ github.event_name == 'schedule' }}
+        # 15 minutes tolerance to deal with delays.
+        run: test -z $(git rev-list --after="1 hour 15 minutes" ${{ github.sha }}) && echo "::set-output name=should_run::false"
+
   build:
+
+    needs: check_latest_commit
+    if: ${{ needs.check_latest_commit.outputs.should_run != 'false' }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
